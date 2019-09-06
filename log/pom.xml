@@ -12,7 +12,7 @@
 	<artifactId>log</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>log</name>
-	<description>Projeto final AceleraDev Java</description>
+	<description>Projeto final AceleraDev Java - Serviço de consumo das mensagens de log e persistência</description>
 
 	<properties>
 		<java.version>11</java.version>
