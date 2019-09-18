@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS usuario (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    profile VARCHAR(10) NOT NULL,
+    perfil VARCHAR(10) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(60) NOT NULL
 );
