@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS usuario (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    perfil VARCHAR(10) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS log (
+    id BIGSERIAL PRIMARY KEY,
+    nivel VARCHAR(10) NOT NULL,
+    nome_servico VARCHAR(100) NOT NULL,
+    payload JSON NOT NULL,
+    data_coleta TIMESTAMP NOT NULL
+);
+
