@@ -1,0 +1,34 @@
+version: '3'
+services:
+  docker-agent:
+    build: ./agent
+    ports:
+      - 8080:8080
+    command: mvn clean spring-boot:run
+    depends_on:
+      - docker-log
+  docker-log:
+    build: ./log
+    ports:
+      - 8070:8070
+    command: mvn clean spring-boot:run
+    depends_on:
+      - docker-postgres
+      - docker-rabbitmq
+    network_mode: "host"
+  docker-postgres:
+    image: postgres:10.4
+    environment:
+      - POSTGRES_DB=log
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  docker-rabbitmq:
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+networks:
+  docker-agent:
+  docker-log:
+
+
