@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 
 CREATE TABLE IF NOT EXISTS log (
     id BIGSERIAL PRIMARY KEY,
+    ambiente VARCHAR(10) NOT NULL,
     nivel VARCHAR(10) NOT NULL,
     nome_servico VARCHAR(100) NOT NULL,
     payload JSON NOT NULL,
