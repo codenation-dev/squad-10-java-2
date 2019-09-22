@@ -19,6 +19,7 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     private Usuario usuario;
 
@@ -26,6 +27,7 @@ public class Log {
     @NotBlank
     private String descricao;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Nivel nivel;
 
