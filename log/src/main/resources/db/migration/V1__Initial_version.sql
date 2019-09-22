@@ -2,15 +2,17 @@ CREATE TABLE IF NOT EXISTS usuario (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     perfil VARCHAR(10) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS log (
     id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT REFERENCES usuario(id) NOT NULL,
+    descricao VARCHAR(200) NOT NULL,
     nivel VARCHAR(10) NOT NULL,
-    nome_servico VARCHAR(100) NOT NULL,
     payload JSON NOT NULL,
-    data_coleta TIMESTAMP NOT NULL
+    data_coleta TIMESTAMP NOT NULL,
+    ambiente VARCHAR(15) NOT NULL
 );
 
