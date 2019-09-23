@@ -30,5 +30,7 @@ services:
 networks:
   docker-agent:
   docker-log:
+  docker-postgres:
+  docker-rabbitmq:
 
 
