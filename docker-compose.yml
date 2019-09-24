@@ -32,5 +32,3 @@ networks:
   docker-log:
   docker-postgres:
   docker-rabbitmq:
-
-

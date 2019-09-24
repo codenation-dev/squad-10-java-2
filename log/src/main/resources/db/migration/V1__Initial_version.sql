@@ -15,4 +15,3 @@ CREATE TABLE IF NOT EXISTS log (
     data_coleta TIMESTAMP NOT NULL,
     ambiente VARCHAR(15) NOT NULL
 );
-
