@@ -10,12 +10,11 @@ services:
   docker-log:
     build: ./log
     ports:
-      - 8070:8070
+      - 8070:8080
     command: mvn clean spring-boot:run
     depends_on:
       - docker-postgres
       - docker-rabbitmq
-    network_mode: "host"
   docker-postgres:
     image: postgres:10.4
     environment:
@@ -27,8 +26,3 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-networks:
-  docker-agent:
-  docker-log:
-  docker-postgres:
-  docker-rabbitmq:
