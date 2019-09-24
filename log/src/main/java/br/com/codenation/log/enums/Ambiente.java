@@ -1,5 +1,5 @@
 package br.com.codenation.log.enums;
 
-public enum AmbienteEnum {
+public enum Ambiente {
     PRODUCAO, HOMOLOGACAO, DESENVOLVIMENTO
 }

@@ -1,5 +1,5 @@
 package br.com.codenation.log.enums;
 
-public enum NivelEnum {
+public enum Nivel {
     DEBUG, WARNING, ERROR
 }

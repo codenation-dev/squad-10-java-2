@@ -1,6 +1,6 @@
 package br.com.codenation.log.entity;
 
-import br.com.codenation.log.entity.enums.Perfil;
+import br.com.codenation.log.enums.Perfil;
 import lombok.Getter;
 import lombok.Setter;
 

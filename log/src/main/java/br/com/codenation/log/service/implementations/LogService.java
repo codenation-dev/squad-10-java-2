@@ -1,9 +1,9 @@
 package br.com.codenation.log.service.implementations;
 
 import br.com.codenation.log.dto.LogDTO;
-import br.com.codenation.log.enums.AmbienteEnum;
-import br.com.codenation.log.enums.NivelEnum;
-import br.com.codenation.log.enums.OrdenacaoEnum;
+import br.com.codenation.log.enums.Ambiente;
+import br.com.codenation.log.enums.Nivel;
+import br.com.codenation.log.enums.Ordenacao;
 import br.com.codenation.log.service.interfaces.LogServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,22 +16,27 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LogService implements LogServiceInterface {
     @Override
-    public Optional<LogDTO> findById(Long id) {
+    public Optional<LogDTO> buscarPorId(Ambiente ambiente, Long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<LogDTO> listaPorAmbiente(AmbienteEnum ambiente) {
+    public List<LogDTO> listarPorAmbiente(Ambiente ambiente) {
         return Collections.emptyList();
     }
 
     @Override
-    public List<LogDTO> listaComFiltros(AmbienteEnum ambiente, NivelEnum nivel, String descricao, String origem, OrdenacaoEnum ordenacao) {
+    public List<LogDTO> listarComFiltros(Ambiente ambiente, Nivel nivel, String descricao, String origem, Ordenacao ordenacao) {
         return Collections.emptyList();
     }
 
     @Override
-    public void delete(Long id) {
+    public void apagar(Ambiente ambiente, Long id) {
 // TODO: implementar delete
+    }
+
+    @Override
+    public void arquivar(Ambiente ambiente, Long id) {
+// TODO: implementar arquivar
     }
 }

@@ -1,7 +1,8 @@
 package br.com.codenation.log.dto;
 
-import br.com.codenation.log.enums.AmbienteEnum;
-import br.com.codenation.log.enums.NivelEnum;
+import br.com.codenation.log.entity.Usuario;
+import br.com.codenation.log.enums.Ambiente;
+import br.com.codenation.log.enums.Nivel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogDTO {
-    private AmbienteEnum ambiente;
-    private NivelEnum nivel;
+    private Ambiente ambiente;
+    private Nivel nivel;
     private PayloadDTO payload;
-//    private Usuario usuario;
+    private Usuario usuario;
 }
