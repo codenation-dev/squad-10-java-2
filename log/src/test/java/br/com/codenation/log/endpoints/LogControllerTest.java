@@ -16,7 +16,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,26 +35,6 @@ public class LogControllerTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
-    @Test
-    public void deveRetornarListaDeLogs() {
-        doReturn(Arrays.asList(new LogDTO(), new LogDTO())).when(logService).listarPorAmbiente(Ambiente.DESENVOLVIMENTO);
-
-        ResponseEntity<List<LogDTO>> response = logController.listarPorAmbiente(Ambiente.DESENVOLVIMENTO);
-
-        List<LogDTO> logs = response.getBody();
-        assertEquals(2, logs.size());
-    }
-
-    @Test
-    public void deveRetornarListaVaziaSeLogsNaoEncontrados() {
-        doReturn(Collections.emptyList()).when(logService).listarPorAmbiente(Ambiente.DESENVOLVIMENTO);
-
-        ResponseEntity<List<LogDTO>> response = logController.listarPorAmbiente(Ambiente.DESENVOLVIMENTO);
-
-        List<LogDTO> logs = response.getBody();
-        assertEquals(0, logs.size());
-    }
 
     @Test
     public void deveRetornarListaDeLogsParaConsultaComFiltros() {

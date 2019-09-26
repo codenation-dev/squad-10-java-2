@@ -12,8 +12,6 @@ public interface LogServiceInterface {
 
     Optional<LogDTO> buscarPorId(Ambiente ambiente, Long id);
 
-    List<LogDTO> listarPorAmbiente(Ambiente ambiente);
-
     List<LogDTO> listarComFiltros(Ambiente ambiente, Nivel nivel, String descricao, String origem, Ordenacao ordenacao);
 
     void apagar(Ambiente ambiente, Long id);

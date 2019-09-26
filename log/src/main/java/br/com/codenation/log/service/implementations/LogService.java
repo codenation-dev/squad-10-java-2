@@ -21,11 +21,6 @@ public class LogService implements LogServiceInterface {
     }
 
     @Override
-    public List<LogDTO> listarPorAmbiente(Ambiente ambiente) {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<LogDTO> listarComFiltros(Ambiente ambiente, Nivel nivel, String descricao, String origem, Ordenacao ordenacao) {
         return Collections.emptyList();
     }
