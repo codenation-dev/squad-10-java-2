@@ -1,4 +1,5 @@
 package br.com.codenation.agent.enums;
 
-public class Ambiente {
+public enum Ambiente {
+    PRODUCAO, HOMOLOGACAO, DESENVOLVIMENTO
 }
