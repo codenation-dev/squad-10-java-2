@@ -1,7 +1,6 @@
 package br.com.codenation.log.endpoints;
 
 import br.com.codenation.log.dto.LogDTO;
-import br.com.codenation.log.endpoints.advice.LogNotFoundException;
 import br.com.codenation.log.enums.Ambiente;
 import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
@@ -35,7 +34,7 @@ public class LogController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Busca log por id", produces = "aplication/json")
     public ResponseEntity<LogDTO> buscarPorId(@PathVariable Ambiente ambiente, @PathVariable Long id) {
-        return new ResponseEntity<>(logService.buscarPorId(ambiente, id).orElseThrow(() -> new LogNotFoundException(id)), HttpStatus.OK);
+        return new ResponseEntity<>(logService.buscarPorId(ambiente, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

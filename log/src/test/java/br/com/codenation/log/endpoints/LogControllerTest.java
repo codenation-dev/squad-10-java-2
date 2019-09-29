@@ -17,12 +17,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogControllerTest {
@@ -49,7 +47,7 @@ public class LogControllerTest {
     @Test
     public void deveRetornarCodigo200ERecursoEncontrado() {
         LogDTO logDTO = new LogDTO();
-        doReturn(Optional.of(logDTO)).when(logService).buscarPorId(any(), any());
+        doReturn(logDTO).when(logService).buscarPorId(any(), any());
 
         ResponseEntity<LogDTO> response = logController.buscarPorId(Ambiente.PRODUCAO, 1L);
 
@@ -59,6 +57,7 @@ public class LogControllerTest {
 
     @Test
     public void deveLancarExcecaoCasoRecursoNaoEncontrado() {
+        doThrow(new LogNotFoundException(1L)).when(logService).buscarPorId(Ambiente.DESENVOLVIMENTO, 1L);
         thrown.expect(LogNotFoundException.class);
         thrown.expectMessage("Log id 1 not found.");
 

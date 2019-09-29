@@ -1,6 +1,7 @@
 package br.com.codenation.log.service.implementations;
 
 import br.com.codenation.log.dto.LogDTO;
+import br.com.codenation.log.endpoints.advice.LogNotFoundException;
 import br.com.codenation.log.enums.Ambiente;
 import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
@@ -16,22 +17,24 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LogService implements LogServiceInterface {
     @Override
-    public Optional<LogDTO> buscarPorId(Ambiente ambiente, Long id) {
-        return Optional.empty();
+    public LogDTO buscarPorId(Ambiente ambiente, Long id) {
+        // TODO: implementar metodo
+        return Optional.of(new LogDTO()).orElseThrow(() -> new LogNotFoundException(id));
     }
 
     @Override
     public List<LogDTO> listarComFiltros(Ambiente ambiente, Nivel nivel, String descricao, String origem, Ordenacao ordenacao) {
+        // TODO: implementar metodo
         return Collections.emptyList();
     }
 
     @Override
     public void apagar(Ambiente ambiente, Long id) {
-// TODO: implementar delete
+        // TODO: implementar delete
     }
 
     @Override
     public void arquivar(Ambiente ambiente, Long id) {
-// TODO: implementar arquivar
+        // TODO: implementar arquivar
     }
 }
