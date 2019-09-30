@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface LogServiceInterface {
 
-    LogDTO buscarPorId(Ambiente ambiente, Long id);
+    LogDTO buscarPorId(Long id);
 
     List<LogDTO> listarComFiltros(Ambiente ambiente, Nivel nivel, String descricao, String origem, Ordenacao ordenacao);
 
-    void apagar(Ambiente ambiente, Long id);
+    void apagar(Long id);
 
-    void arquivar(Ambiente ambiente, Long id);
+    void arquivar(Long id);
 }

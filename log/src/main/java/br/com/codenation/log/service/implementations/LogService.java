@@ -17,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LogService implements LogServiceInterface {
     @Override
-    public LogDTO buscarPorId(Ambiente ambiente, Long id) {
+    public LogDTO buscarPorId(Long id) {
         // TODO: implementar metodo
         return Optional.of(new LogDTO()).orElseThrow(() -> new LogNotFoundException(id));
     }
@@ -29,12 +29,12 @@ public class LogService implements LogServiceInterface {
     }
 
     @Override
-    public void apagar(Ambiente ambiente, Long id) {
+    public void apagar(Long id) {
         // TODO: implementar delete
     }
 
     @Override
-    public void arquivar(Ambiente ambiente, Long id) {
+    public void arquivar(Long id) {
         // TODO: implementar arquivar
     }
 }

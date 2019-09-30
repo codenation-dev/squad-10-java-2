@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/log/{ambiente}")
+@RequestMapping("/log")
 @AllArgsConstructor
 public class LogController {
 
     private LogService logService;
 
-    @GetMapping
+    @GetMapping("/{ambiente}")
     @ApiOperation(value = "Lista logs aplicando filtros", produces = "aplication/json")
     public ResponseEntity<List<LogDTO>> listarComFiltros(@PathVariable Ambiente ambiente,
                                                          @RequestParam(required = false) Nivel nivel,
@@ -33,21 +33,21 @@ public class LogController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Busca log por id", produces = "aplication/json")
-    public ResponseEntity<LogDTO> buscarPorId(@PathVariable Ambiente ambiente, @PathVariable Long id) {
-        return new ResponseEntity<>(logService.buscarPorId(ambiente, id), HttpStatus.OK);
+    public ResponseEntity<LogDTO> buscarPorId(@PathVariable Long id) {
+        return new ResponseEntity<>(logService.buscarPorId(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Apaga log")
-    public ResponseEntity apagar(@PathVariable Ambiente ambiente, @PathVariable Long id) {
-        logService.apagar(ambiente, id);
+    public ResponseEntity apagar(@PathVariable Long id) {
+        logService.apagar(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @ApiOperation("Arquiva log")
-    public ResponseEntity arquivar(@PathVariable Ambiente ambiente, @PathVariable Long id) {
-        logService.arquivar(ambiente, id);
+    public ResponseEntity arquivar(@PathVariable Long id) {
+        logService.arquivar(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

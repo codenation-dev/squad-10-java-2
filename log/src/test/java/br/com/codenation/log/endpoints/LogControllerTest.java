@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -47,9 +46,9 @@ public class LogControllerTest {
     @Test
     public void deveRetornarCodigo200ERecursoEncontrado() {
         LogDTO logDTO = new LogDTO();
-        doReturn(logDTO).when(logService).buscarPorId(any(), any());
+        doReturn(logDTO).when(logService).buscarPorId(any());
 
-        ResponseEntity<LogDTO> response = logController.buscarPorId(Ambiente.PRODUCAO, 1L);
+        ResponseEntity<LogDTO> response = logController.buscarPorId(1L);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(logDTO, response.getBody());
@@ -57,27 +56,27 @@ public class LogControllerTest {
 
     @Test
     public void deveLancarExcecaoCasoRecursoNaoEncontrado() {
-        doThrow(new LogNotFoundException(1L)).when(logService).buscarPorId(Ambiente.DESENVOLVIMENTO, 1L);
+        doThrow(new LogNotFoundException(1L)).when(logService).buscarPorId(1L);
         thrown.expect(LogNotFoundException.class);
         thrown.expectMessage("Log id 1 not found.");
 
-        logController.buscarPorId(Ambiente.DESENVOLVIMENTO, 1L);
+        logController.buscarPorId(1L);
     }
 
     @Test
     public void deveRetornarCodigo200SeRecursoArquivadoComSucesso() {
-        doNothing().when(logService).arquivar(any(), any());
+        doNothing().when(logService).arquivar(any());
 
-        ResponseEntity response = logController.arquivar(Ambiente.PRODUCAO, 1L);
+        ResponseEntity response = logController.arquivar(1L);
 
         assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
     public void deveRetornarCodigo200SeRecursoApagadoComSucesso() {
-        doNothing().when(logService).apagar(any(), any());
+        doNothing().when(logService).apagar(any());
 
-        ResponseEntity response = logController.apagar(Ambiente.PRODUCAO, 1L);
+        ResponseEntity response = logController.apagar(1L);
 
         assertEquals(200, response.getStatusCodeValue());
     }
