@@ -36,7 +36,7 @@ public class LogControllerTest {
 
     @Test
     public void deveRetornarListaDeLogsParaConsultaComFiltros() {
-        doReturn(Arrays.asList(new LogDTO(), new LogDTO())).when(logService).listarComFiltros(any(), any(), any(), any(), any());
+        doReturn(List.of(new LogDTO(), new LogDTO())).when(logService).listarComFiltros(any(), any(), any(), any(), any());
 
         ResponseEntity<List<LogDTO>> response = logController.listarComFiltros(Ambiente.DESENVOLVIMENTO, Nivel.DEBUG, "descricao", "origem", Ordenacao.FREQUENCIA);
 
