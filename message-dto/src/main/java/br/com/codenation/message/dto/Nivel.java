@@ -1,4 +1,4 @@
-package br.com.codenation.message.dto.dto;
+package br.com.codenation.message.dto;
 
 public enum Nivel {
 	DEBUG,

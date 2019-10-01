@@ -1,18 +1,16 @@
-package br.com.codenation.message.dto.dto;
-
-import java.time.LocalDateTime;
+package br.com.codenation.message.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Message {
-	private String descricao;
+@Getter
+public class Evento {
 	private Nivel nivel;
-	private String payload;
-	private LocalDateTime dataColeta;
+	private Payload payload;
 	private Ambiente ambiente;
 }
