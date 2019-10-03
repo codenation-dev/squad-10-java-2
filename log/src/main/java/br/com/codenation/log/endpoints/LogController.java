@@ -20,7 +20,7 @@ public class LogController {
 
     private LogService logService;
 
-    @GetMapping("/{ambiente}")
+    @GetMapping("/ambiente/{ambiente}")
     @ApiOperation(value = "Lista logs aplicando filtros", produces = "aplication/json")
     public ResponseEntity<List<LogDTO>> listarComFiltros(@PathVariable Ambiente ambiente,
                                                          @RequestParam(required = false) Nivel nivel,
