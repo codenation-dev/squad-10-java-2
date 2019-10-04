@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 public class Payload {
 	private String titulo;
 	private String descricao;

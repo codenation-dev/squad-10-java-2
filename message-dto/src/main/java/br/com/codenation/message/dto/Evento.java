@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 public class Evento {
 	private Nivel nivel;
 	private Payload payload;
 	private Ambiente ambiente;
+	private Long usuarioId;
 }
