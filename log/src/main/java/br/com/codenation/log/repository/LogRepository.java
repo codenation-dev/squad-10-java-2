@@ -1,9 +1,7 @@
 package br.com.codenation.log.repository;
 
 import br.com.codenation.log.entity.Log;
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
-import org.springframework.data.domain.Sort;
+import br.com.codenation.log.projection.LogProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,16 +10,53 @@ import java.util.Optional;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
 
-    Optional<Log> findByAmbienteAndId(Ambiente ambiente, Long id);
+    @Query(value = "SELECT " +
+            "ambiente, " +
+            "nivel, " +
+            "cast (payload AS VARCHAR), " +
+            "usuario_id AS usuarioId, " +
+            "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
+            "FROM log " +
+            "WHERE id=?1", nativeQuery = true)
+    Optional<LogProjection> findLogById(Long id);
 
-    List<Log> findAllByAmbiente(Ambiente ambiente, Sort sort);
+    @Query(value = "SELECT " +
+            "ambiente, " +
+            "nivel, " +
+            "cast (payload AS VARCHAR), " +
+            "usuario_id AS usuarioId, " +
+            "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
+            "FROM log " +
+            "WHERE ambiente=?1", nativeQuery = true)
+    List<LogProjection> findAllByAmbiente(String ambiente);
 
-    List<Log> findAllByAmbienteAndNivel(Ambiente ambiente, Nivel nivel, Sort sort);
+    @Query(value = "SELECT " +
+            "ambiente, " +
+            "nivel, " +
+            "cast (payload AS VARCHAR), " +
+            "usuario_id AS usuarioId, " +
+            "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
+            "FROM log " +
+            "WHERE ambiente=?1 AND nivel=?2", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndNivel(String ambiente, String nivel);
 
-    List<Log> findAllByAmbienteAndDescricao(Ambiente ambiente, String decricao, Sort sort);
+    @Query(value = "SELECT " +
+            "ambiente, " +
+            "nivel, " +
+            "cast (payload AS VARCHAR), " +
+            "usuario_id AS usuarioId, " +
+            "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
+            "FROM log " +
+            "WHERE ambiente =?1 AND descricao=?2", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndDescricao(String ambiente, String decricao);
 
-    @Query(value = "SELECT * FROM log WHERE ambiente=?1 AND payload ->> 'origem'= ?2 ORDER BY ?3", nativeQuery = true)
-    List<Log> findAllByAmbienteAndOrigem(Ambiente ambiente, String origem, String ordenacao);
-
-    void deleteByAmbienteAndId(Ambiente ambiente, Long id);
+    @Query(value = "SELECT " +
+            "ambiente, " +
+            "nivel, " +
+            "cast (payload AS VARCHAR), " +
+            "usuario_id AS usuarioId, " +
+            "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
+            "FROM log " +
+            "WHERE ambiente=?1 AND payload ->> 'origem'=?2", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndOrigem(String ambiente, String origem);
 }
