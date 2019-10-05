@@ -26,7 +26,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo("Projeto Final - Agent",
+        return new ApiInfo("Projeto Final - Agent",
                 "Documentação do Agent para o Projeto Final - #Squad10",
                 "1.0",
                 null,
@@ -34,8 +34,6 @@ public class SwaggerConfig {
                 null,
                 null,
                 new ArrayList<>());
-        return apiInfo;
-
     }
 
 }
