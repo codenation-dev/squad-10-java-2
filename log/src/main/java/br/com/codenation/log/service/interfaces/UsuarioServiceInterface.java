@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UsuarioServiceInterface {
     Optional<Usuario> buscaPorEmail(String email);
-    Usuario salvar(Usuario usuario);
+    Optional<Usuario> salvar(Usuario usuario);
 }
