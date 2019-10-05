@@ -14,7 +14,7 @@ public class AgentService implements AgentServiceInterface {
 	private AgentSource agentSource;
 
 	@Override
-	public void sendMessage(Evento evento) {
+	public void sendEvento(Evento evento) {
 		agentSource.sendLog().send(MessageBuilder.withPayload(evento).build());
 	}
 }
