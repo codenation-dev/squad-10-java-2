@@ -4,6 +4,7 @@ import br.com.codenation.log.entity.Log;
 import br.com.codenation.log.projection.LogProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,8 @@ public interface LogRepository extends JpaRepository<Log, Long> {
             "usuario_id AS usuarioId, " +
             "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
             "FROM log " +
-            "WHERE id=?1", nativeQuery = true)
-    Optional<LogProjection> findLogById(Long id);
+            "WHERE id=:id", nativeQuery = true)
+    Optional<LogProjection> findLogById(@Param("id") Long id);
 
     @Query(value = "SELECT " +
             "ambiente, " +
@@ -27,8 +28,8 @@ public interface LogRepository extends JpaRepository<Log, Long> {
             "usuario_id AS usuarioId, " +
             "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
             "FROM log " +
-            "WHERE ambiente=?1", nativeQuery = true)
-    List<LogProjection> findAllByAmbiente(String ambiente);
+            "WHERE ambiente=:ambiente", nativeQuery = true)
+    List<LogProjection> findAllByAmbiente(@Param("ambiente") String ambiente);
 
     @Query(value = "SELECT " +
             "ambiente, " +
@@ -37,8 +38,8 @@ public interface LogRepository extends JpaRepository<Log, Long> {
             "usuario_id AS usuarioId, " +
             "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
             "FROM log " +
-            "WHERE ambiente=?1 AND nivel=?2", nativeQuery = true)
-    List<LogProjection> findAllByAmbienteAndNivel(String ambiente, String nivel);
+            "WHERE ambiente=:ambiente AND nivel=:nivel", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndNivel(@Param("ambiente") String ambiente, @Param("nivel") String nivel);
 
     @Query(value = "SELECT " +
             "ambiente, " +
@@ -47,8 +48,8 @@ public interface LogRepository extends JpaRepository<Log, Long> {
             "usuario_id AS usuarioId, " +
             "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
             "FROM log " +
-            "WHERE ambiente =?1 AND descricao=?2", nativeQuery = true)
-    List<LogProjection> findAllByAmbienteAndDescricao(String ambiente, String decricao);
+            "WHERE ambiente =:ambiente AND descricao=:descricao", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndDescricao(@Param("ambiente") String ambiente, @Param("descricao") String decricao);
 
     @Query(value = "SELECT " +
             "ambiente, " +
@@ -57,6 +58,6 @@ public interface LogRepository extends JpaRepository<Log, Long> {
             "usuario_id AS usuarioId, " +
             "count(*) OVER (PARTITION BY descricao, nivel) AS frequencia " +
             "FROM log " +
-            "WHERE ambiente=?1 AND payload ->> 'origem'=?2", nativeQuery = true)
-    List<LogProjection> findAllByAmbienteAndOrigem(String ambiente, String origem);
+            "WHERE ambiente=:ambiente AND payload ->> 'origem'=:origem", nativeQuery = true)
+    List<LogProjection> findAllByAmbienteAndOrigem(@Param("ambiente") String ambiente, @Param("origem") String origem);
 }
