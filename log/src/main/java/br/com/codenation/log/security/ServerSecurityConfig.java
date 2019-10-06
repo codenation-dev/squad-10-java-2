@@ -22,7 +22,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
 
-    public ServerSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService,
+    public ServerSecurityConfig(@Qualifier("usuarioService") UserDetailsService userDetailsService,
                                 PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;

@@ -1,17 +1,21 @@
 package br.com.codenation.log.service.implementations;
 
 import br.com.codenation.log.dto.LogDTO;
-import br.com.codenation.log.dto.PayloadDTO;
 import br.com.codenation.log.endpoints.advice.LogNotFoundException;
+import br.com.codenation.log.entity.Log;
 import br.com.codenation.log.entity.Usuario;
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
 import br.com.codenation.log.projection.LogProjection;
 import br.com.codenation.log.repository.LogRepository;
 import br.com.codenation.log.repository.UsuarioRepository;
 import br.com.codenation.log.service.interfaces.LogServiceInterface;
+import br.com.codenation.message.dto.Ambiente;
+import br.com.codenation.message.dto.Evento;
+import br.com.codenation.message.dto.Nivel;
+import br.com.codenation.message.dto.Payload;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,25 @@ public class LogService implements LogServiceInterface {
 
     private LogRepository repository;
     private UsuarioRepository usuarioRepository;
+    private ObjectMapper objectMapper;
+
+    @Override
+    public Optional<Log> salvar(Evento evento) {
+        objectMapper.registerModule(new JavaTimeModule());
+        try {
+            Log ev = new Log();
+            ev.setDescricao(evento.getPayload().getDescricao());
+            ev.setAmbiente(evento.getAmbiente());
+            ev.setNivel(evento.getNivel());
+            ev.setPayload(objectMapper.writeValueAsString(evento.getPayload()));
+            usuarioRepository.findById(evento.getUsuarioId()).ifPresent(ev::setUsuario);
+            ev.setDataColeta(evento.getPayload().getDataHora());
+            return Optional.of(repository.save(ev));
+        } catch (JsonProcessingException e) {
+            log.error("Erro ao serialzar payload", e);
+            return Optional.empty();
+        }
+    }
 
     @Override
     public LogDTO buscarPorId(Long id) {
@@ -45,14 +68,17 @@ public class LogService implements LogServiceInterface {
                                          String origem,
                                          Ordenacao ordenacao) {
 
-        if (Objects.nonNull(nivel))
+        if (Objects.nonNull(nivel)) {
             return filtraPorNivel(ambiente, nivel, ordenacao);
+        }
 
-        if (Objects.nonNull(descricao))
+        if (Objects.nonNull(descricao)) {
             return filtraPorDescricao(ambiente, descricao, ordenacao);
+        }
 
-        if (Objects.nonNull(origem))
+        if (Objects.nonNull(origem)) {
             return filtraPorOrigem(ambiente, origem, ordenacao);
+        }
 
         return filtraPorAmbiente(ambiente, ordenacao);
     }
@@ -78,8 +104,9 @@ public class LogService implements LogServiceInterface {
     }
 
     private List<LogDTO> ordenaLista(List<LogDTO> logs, Ordenacao ordenacao) {
-        if (Objects.isNull(ordenacao))
+        if (Objects.isNull(ordenacao)) {
             return logs;
+        }
 
         switch (ordenacao) {
             case FREQUENCIA:
@@ -101,16 +128,18 @@ public class LogService implements LogServiceInterface {
 
     private LogDTO mapLogProjectionToLogDTO(LogProjection projection) {
         Usuario usuario = usuarioRepository.findById(projection.getUsuarioId()).orElse(null);
-        PayloadDTO payloadDTO = stringToPayloadDTO(projection.getPayload()).orElse(new PayloadDTO());
+        Payload payloadDTO = stringToPayloadDTO(projection.getPayload()).orElse(new Payload());
         Ambiente ambiente = Ambiente.valueOf(projection.getAmbiente());
         Nivel nivel = Nivel.valueOf(projection.getNivel());
 
-        return new LogDTO(ambiente, nivel, payloadDTO, projection.getFrequencia(), usuario);
+        return new LogDTO(projection.getId(), ambiente, nivel, payloadDTO, projection.getFrequencia(), usuario);
     }
 
-    private Optional<PayloadDTO> stringToPayloadDTO(String json) {
+    private Optional<Payload> stringToPayloadDTO(String json) {
+        objectMapper.registerModule(new JavaTimeModule());
+
         try {
-            return Optional.of(new ObjectMapper().readValue(json, PayloadDTO.class));
+            return Optional.of(objectMapper.readValue(json, Payload.class));
         } catch (IOException e) {
             log.error("Erro ao ler json", e);
             return Optional.empty();
@@ -122,8 +151,4 @@ public class LogService implements LogServiceInterface {
         repository.deleteById(id);
     }
 
-    @Override
-    public void arquivar(Long id) {
-        // TODO: implementar arquivar
-    }
 }

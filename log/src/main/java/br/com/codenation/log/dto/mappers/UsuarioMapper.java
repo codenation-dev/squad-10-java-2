@@ -6,6 +6,7 @@ import br.com.codenation.log.entity.Usuario;
 public class UsuarioMapper {
     public static UsuarioDTO toDTO(Usuario usuario) {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(usuario.getId());
         usuarioDTO.setNome(usuario.getNome());
         usuarioDTO.setEmail(usuario.getEmail());
         usuarioDTO.setPerfil(usuario.getPerfil());
@@ -18,5 +19,8 @@ public class UsuarioMapper {
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setPerfil(usuarioDTO.getPerfil());
         return usuario;
+    }
+
+    private UsuarioMapper() {
     }
 }

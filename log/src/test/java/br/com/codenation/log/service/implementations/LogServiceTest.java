@@ -3,12 +3,14 @@ package br.com.codenation.log.service.implementations;
 import br.com.codenation.log.dto.LogDTO;
 import br.com.codenation.log.endpoints.advice.LogNotFoundException;
 import br.com.codenation.log.entity.Usuario;
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
 import br.com.codenation.log.projection.LogProjection;
 import br.com.codenation.log.repository.LogRepository;
 import br.com.codenation.log.repository.UsuarioRepository;
+import br.com.codenation.message.dto.Ambiente;
+import br.com.codenation.message.dto.Nivel;
+import br.com.codenation.message.dto.Payload;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -40,6 +43,9 @@ public class LogServiceTest {
 
     @Mock
     UsuarioRepository usuarioRepository;
+
+    @Mock
+    ObjectMapper objectMapper;
 
     private LogProjection projection;
 
@@ -56,8 +62,9 @@ public class LogServiceTest {
     }
 
     @Test
-    public void deveBuscarLogPeloIdQuandoRecebeId() {
+    public void deveBuscarLogPeloIdQuandoRecebeId() throws IOException {
         doReturn(Optional.of(projection)).when(logRepository).findLogById(any());
+        doReturn(new Payload()).when(objectMapper).readValue(anyString(), eq(Payload.class));
 
         LogDTO logDTO = service.buscarPorId(1L);
 
@@ -72,8 +79,9 @@ public class LogServiceTest {
     }
 
     @Test
-    public void deveMapearLogProjectionParaLogDTOCorretamente() {
+    public void deveMapearLogProjectionParaLogDTOCorretamente() throws IOException {
         doReturn(Optional.of(projection)).when(logRepository).findLogById(any());
+        doReturn(new Payload()).when(objectMapper).readValue(anyString(), eq(Payload.class));
 
         Usuario usuario = new Usuario();
         usuario.setId(1L);
@@ -90,8 +98,11 @@ public class LogServiceTest {
     }
 
     @Test
-    public void deveMapearStringParaPayloadDTO() {
+    public void deveMapearStringParaPayloadDTO() throws IOException {
+        Payload payload = new Payload();
+        payload.setOrigem("1213");
         doReturn(Optional.of(projection)).when(logRepository).findLogById(any());
+        doReturn(payload).when(objectMapper).readValue(anyString(), eq(Payload.class));
 
         LogDTO logDTO = service.buscarPorId(1L);
 
@@ -139,8 +150,9 @@ public class LogServiceTest {
     }
 
     @Test
-    public void deveOrdenarLogsPorFrequencia() {
+    public void deveOrdenarLogsPorFrequencia() throws IOException {
         doReturn(criaListaDeLogProjectionDesordenada()).when(logRepository).findAllByAmbiente(any());
+        doReturn(new Payload()).when(objectMapper).readValue(anyString(), eq(Payload.class));
 
         List<LogDTO> logs = service.listarComFiltros(Ambiente.DESENVOLVIMENTO,
                 null,
@@ -154,8 +166,9 @@ public class LogServiceTest {
     }
 
     @Test
-    public void deveOrdenarLogsPorNivel() {
+    public void deveOrdenarLogsPorNivel() throws IOException {
         doReturn(criaListaDeLogProjectionDesordenada()).when(logRepository).findAllByAmbiente(any());
+        doReturn(new Payload()).when(objectMapper).readValue(anyString(), eq(Payload.class));
 
         List<LogDTO> logs = service.listarComFiltros(Ambiente.DESENVOLVIMENTO,
                 null,
@@ -191,4 +204,5 @@ public class LogServiceTest {
         service.apagar(1L);
         verify(logRepository).deleteById(1L);
     }
+
 }

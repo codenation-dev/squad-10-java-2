@@ -2,10 +2,10 @@ package br.com.codenation.log.endpoints;
 
 import br.com.codenation.log.dto.LogDTO;
 import br.com.codenation.log.endpoints.advice.LogNotFoundException;
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
 import br.com.codenation.log.service.implementations.LogService;
+import br.com.codenation.message.dto.Ambiente;
+import br.com.codenation.message.dto.Nivel;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -61,15 +61,6 @@ public class LogControllerTest {
         thrown.expectMessage("Log id 1 not found.");
 
         logController.buscarPorId(1L);
-    }
-
-    @Test
-    public void deveRetornarCodigo200SeRecursoArquivadoComSucesso() {
-        doNothing().when(logService).arquivar(any());
-
-        ResponseEntity response = logController.arquivar(1L);
-
-        assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test

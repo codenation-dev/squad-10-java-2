@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class UsuarioDTO {
+    private Long id;
+
     @NotBlank
     private String nome;
 

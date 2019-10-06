@@ -1,10 +1,10 @@
 package br.com.codenation.log.endpoints;
 
 import br.com.codenation.log.dto.LogDTO;
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
 import br.com.codenation.log.enums.Ordenacao;
 import br.com.codenation.log.service.implementations.LogService;
+import br.com.codenation.message.dto.Ambiente;
+import br.com.codenation.message.dto.Nivel;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class LogController {
     private LogService logService;
 
     @GetMapping("/ambiente/{ambiente}")
-    @ApiOperation(value = "Lista logs aplicando filtros", produces = "aplication/json")
+    @ApiOperation(value = "Lista logs aplicando filtros", produces = "application/json")
     public ResponseEntity<List<LogDTO>> listarComFiltros(@PathVariable Ambiente ambiente,
                                                          @RequestParam(required = false) Nivel nivel,
                                                          @RequestParam(required = false) String descricao,
@@ -32,7 +32,7 @@ public class LogController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Busca log por id", produces = "aplication/json")
+    @ApiOperation(value = "Busca log por id", produces = "application/json")
     public ResponseEntity<LogDTO> buscarPorId(@PathVariable Long id) {
         return new ResponseEntity<>(logService.buscarPorId(id), HttpStatus.OK);
     }
@@ -44,10 +44,4 @@ public class LogController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    @ApiOperation("Arquiva log")
-    public ResponseEntity arquivar(@PathVariable Long id) {
-        logService.arquivar(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

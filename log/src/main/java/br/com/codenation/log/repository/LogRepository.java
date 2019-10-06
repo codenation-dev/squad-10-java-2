@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface LogRepository extends JpaRepository<Log, Long> {
 
     @Query(value = "SELECT " +
+            "id, " +
             "ambiente, " +
             "nivel, " +
             "cast (payload AS VARCHAR), " +
@@ -22,6 +23,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
     Optional<LogProjection> findLogById(@Param("id") Long id);
 
     @Query(value = "SELECT " +
+            "id, " +
             "ambiente, " +
             "nivel, " +
             "cast (payload AS VARCHAR), " +
@@ -32,6 +34,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
     List<LogProjection> findAllByAmbiente(@Param("ambiente") String ambiente);
 
     @Query(value = "SELECT " +
+            "id, " +
             "ambiente, " +
             "nivel, " +
             "cast (payload AS VARCHAR), " +
@@ -42,6 +45,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
     List<LogProjection> findAllByAmbienteAndNivel(@Param("ambiente") String ambiente, @Param("nivel") String nivel);
 
     @Query(value = "SELECT " +
+            "id, " +
             "ambiente, " +
             "nivel, " +
             "cast (payload AS VARCHAR), " +
@@ -52,6 +56,7 @@ public interface LogRepository extends JpaRepository<Log, Long> {
     List<LogProjection> findAllByAmbienteAndDescricao(@Param("ambiente") String ambiente, @Param("descricao") String decricao);
 
     @Query(value = "SELECT " +
+            "id, " +
             "ambiente, " +
             "nivel, " +
             "cast (payload AS VARCHAR), " +

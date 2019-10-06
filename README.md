@@ -2,6 +2,10 @@
 
 ## Passo a passo para executar o sistema
 
+No diretório `message-dto`
+
+`mvn clean install`
+
 No diretório `log`:
 
 `./mvnw clean package`
@@ -9,10 +13,6 @@ No diretório `log`:
 No diretório `agent`:
 
 `./mvnw clean package`
-
-No diretório `message-dto`
-
-`mvn clean install`
 
 No diretório do projeto (`squad-10-java-2`):
 
