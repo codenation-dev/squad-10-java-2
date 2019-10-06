@@ -1,5 +1,6 @@
 package br.com.codenation.log.security;
 
+import br.com.codenation.log.enums.Perfil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,31 +12,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private final UserDetailsService userDetailsService;
 
-    public ServerSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService) {
+    private final PasswordEncoder passwordEncoder;
+
+    public ServerSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService,
+                                PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailsService);
         return provider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -50,8 +48,8 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/signin/**").permitAll()
-                .antMatchers("/api/log/**").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/api/usuarios/**").hasAuthority("ADMIN")
+                .antMatchers("/api/log/**").hasAnyAuthority(Perfil.ADMIN.name(), Perfil.DEFAULT.name())
+                .antMatchers("/api/usuarios/**").hasAuthority(Perfil.ADMIN.name())
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated();
     }
