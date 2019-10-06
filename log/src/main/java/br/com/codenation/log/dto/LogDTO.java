@@ -16,5 +16,6 @@ public class LogDTO {
     private Ambiente ambiente;
     private Nivel nivel;
     private PayloadDTO payload;
+    private Long frequencia;
     private Usuario usuario;
 }
