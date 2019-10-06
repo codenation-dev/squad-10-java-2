@@ -39,15 +39,20 @@ public class LogService implements LogServiceInterface {
     @Override
     public Optional<Log> salvar(Evento evento) {
         objectMapper.registerModule(new JavaTimeModule());
+        Optional<Log> log = converterParaEntidade(evento);
+        return log.map(log1 -> repository.save(log1));
+    }
+
+    private Optional<Log> converterParaEntidade(Evento evento) {
         try {
-            Log ev = new Log();
-            ev.setDescricao(evento.getPayload().getDescricao());
-            ev.setAmbiente(evento.getAmbiente());
-            ev.setNivel(evento.getNivel());
-            ev.setPayload(objectMapper.writeValueAsString(evento.getPayload()));
-            usuarioRepository.findById(evento.getUsuarioId()).ifPresent(ev::setUsuario);
-            ev.setDataColeta(evento.getPayload().getDataHora());
-            return Optional.of(repository.save(ev));
+            Log log = new Log();
+            log.setDescricao(evento.getPayload().getDescricao());
+            log.setAmbiente(evento.getAmbiente());
+            log.setNivel(evento.getNivel());
+            log.setPayload(objectMapper.writeValueAsString(evento.getPayload()));
+            usuarioRepository.findById(evento.getUsuarioId()).ifPresent(log::setUsuario);
+            log.setDataColeta(evento.getPayload().getDataHora());
+            return Optional.of(log);
         } catch (JsonProcessingException e) {
             log.error("Erro ao serialzar payload", e);
             return Optional.empty();
