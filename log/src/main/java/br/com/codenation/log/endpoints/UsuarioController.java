@@ -20,7 +20,7 @@ public class UsuarioController {
     private UserService userService;
 
     @PostMapping
-    @ApiOperation(value = "Cadastra novo usuario", consumes = "aplication/json", produces = "aplication/json")
+    @ApiOperation(value = "Cadastra novo usuario", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UsuarioDTO> salvarUsuario(@Valid UsuarioDTO usuario) {
         return new ResponseEntity<>(UsuarioMapper.toDTO(userService.salvarUsuario(usuario)), HttpStatus.CREATED);
     }
