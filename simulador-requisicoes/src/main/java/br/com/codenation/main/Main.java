@@ -7,11 +7,10 @@ import br.com.codenation.message.dto.Payload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +18,40 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
+import static io.restassured.RestAssured.given;
+
 public class Main {
+
 
     public static void main(String[] args) {
 
-            Scanner sc = new Scanner(System.in);
-            System.out.print("Quantidade de requisições:");
-            int range = sc.nextInt();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Quantidade de requisições:");
+        int range = sc.nextInt();
 
-            IntStream.rangeClosed(1, range).mapToObj(Main::gerarEvento).forEach(Main::enviarRequisicao);
+        String accessToken = autenticarSimulador();
+
+        IntStream.rangeClosed(1, range).mapToObj(Main::gerarEvento).forEach(evento -> enviarRequisicao(evento, accessToken));
 
     }
 
-    private static String gerarEvento(int sequencial)  {
+    private static String autenticarSimulador() {
+        Response response =
+                given()
+                        .auth().preemptive().basic("squad10", "squad10#123")
+                        .contentType("application/x-www-form-urlencoded")
+                        .formParam("grant_type", "password")
+                        .formParam("username", "squad10")
+                        .formParam("password", "agent#321")
+                        .when()
+                        .post("http://localhost:8080/oauth/token");
+
+        JSONObject jsonObject = new JSONObject(response.getBody().asString());
+        String accessToken = jsonObject.get("access_token").toString();
+        return accessToken;
+    }
+
+    private static String gerarEvento(int sequencial) {
 
         Evento evento = new Evento();
         evento.setNivel(Nivel.values()[new Random().nextInt(Nivel.values().length)]);
@@ -61,33 +81,28 @@ public class Main {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println(json);
         return json;
     }
 
+    private static void enviarRequisicao(String eventoJson, String token) {
 
-    private static void enviarRequisicao(String eventoJson) {
-        try {
-            URL url = new URL("http://localhost:8080/evento");
+        Response response =
+                given()
+                        .headers(
+                                "Authorization",
+                                "Bearer " + token,
+                                "Content-Type",
+                                ContentType.JSON,
+                                "Accept",
+                                ContentType.JSON)
+                        .body(eventoJson)
+                        .when()
+                        .post("http://localhost:8080/evento")
+                        .then()
+                        .extract()
+                        .response();
 
-            HttpURLConnection httpcon = (HttpURLConnection) url.openConnection();
-
-
-            httpcon.setDoOutput(true);
-            httpcon.setRequestMethod("POST");
-            httpcon.setRequestProperty("Content-Type", "application/json");
-
-            OutputStreamWriter output = new OutputStreamWriter(httpcon.getOutputStream());
-
-            output.write(eventoJson);
-            output.flush();
-            output.close();
-            httpcon.connect();
-
-            int responseCode = httpcon.getResponseCode();
-            System.out.println("Retorno: " + responseCode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Retorno: " + response.getStatusCode());
     }
+
 }
