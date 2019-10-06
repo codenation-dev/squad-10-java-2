@@ -21,7 +21,7 @@ No diretório do projeto (`squad-10-java-2`):
 `docker-compose up`
 
 
-## Segurança
+## Segurança Log
 
 Fazer `POST` em `http://localhost:8070/oauth/token` 
 
