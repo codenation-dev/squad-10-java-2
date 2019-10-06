@@ -24,11 +24,6 @@ public class SwaggerConfig {
     @Value("${swagger.oauth.url}")
     private String swaggerOAuthUrl;
 
-    @Value("${security.oauth2.client.client-id}")
-    private String clientId;
-    @Value("${security.oauth2.client.client-secret}")
-    private String clientSecret;
-
     @Value("${swagger.oauth.url}")
     private String authLink;
 
@@ -93,7 +88,7 @@ public class SwaggerConfig {
 
     @Bean
     public SecurityConfiguration securityInfo() {
-        return new SecurityConfiguration(clientId, clientSecret, "", "", "", ApiKeyVehicle.HEADER, "", " ");
+        return new SecurityConfiguration(null, null, "", "", "", ApiKeyVehicle.HEADER, "", " ");
     }
 
 }
