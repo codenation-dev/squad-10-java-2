@@ -4,17 +4,16 @@ import br.com.codenation.log.entity.Usuario;
 import br.com.codenation.log.repository.UsuarioRepository;
 import br.com.codenation.log.service.interfaces.UsuarioServiceInterface;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class UsuarioService implements UsuarioServiceInterface {
 
-    private static final Logger log = LoggerFactory.getLogger(UsuarioService.class);
     private UsuarioRepository repository;
 
     @Override
