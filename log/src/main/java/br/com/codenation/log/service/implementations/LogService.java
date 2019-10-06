@@ -55,11 +55,12 @@ public class LogService implements LogServiceInterface {
         if (Objects.nonNull(origem))
             return filtraPorOrigem(ambiente, origem, ordenacao);
 
-        return filtraPorAmbiente(ambiente);
+        return filtraPorAmbiente(ambiente, ordenacao);
     }
 
-    private List<LogDTO> filtraPorAmbiente(Ambiente ambiente) {
-        return mapLogProjectionToLogDTO(repository.findAllByAmbiente(ambiente.name()));
+    private List<LogDTO> filtraPorAmbiente(Ambiente ambiente, Ordenacao ordenacao) {
+        List<LogDTO> logs = mapLogProjectionToLogDTO(repository.findAllByAmbiente(ambiente.name()));
+        return ordenaLista(logs, ordenacao);
     }
 
     private List<LogDTO> filtraPorNivel(Ambiente ambiente, Nivel nivel, Ordenacao ordenacao) {
