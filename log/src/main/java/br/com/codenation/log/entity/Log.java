@@ -1,7 +1,8 @@
 package br.com.codenation.log.entity;
 
-import br.com.codenation.log.enums.Ambiente;
-import br.com.codenation.log.enums.Nivel;
+
+import br.com.codenation.message.dto.Ambiente;
+import br.com.codenation.message.dto.Nivel;
 import lombok.Getter;
 import lombok.Setter;
 
